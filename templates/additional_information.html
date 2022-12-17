@@ -4,16 +4,11 @@
 {% endblock %}
 
 {% block body %}
-    <div class="container mt-5">
-    <h1>{{ gad_detail.title }}</h1>
-            <div class="alert alert-info">
-                <h2>{{ gad_detail.title }}</h2>
-                <p>{{ gad_detail.content }}</p>
-                <p><b>Дата: {{ gad_detail.tm.date() }}</b></p>
-                <a href="/ads/{{ gad_detail.id }}/change" class = "btn btn-warning">Изменить</a>
-                <a href="/ads/{{ gad_detail.id }}/removal" class = "btn btn-danger">Удалить</a>
-            </div>
 
-    </div>
+    <h2>{{ gad_detail.title }}</h2>
+    <p>{{ gad_detail.content }}</p>
+    <p><b>Дата: {{ gad_detail.tm.date() }}</b></p>
+    <a href="/ads/{{ gad_detail.id }}/change" class = "btn btn-warning">Изменить</a>
+    <a href="/ads/{{ gad_detail.id }}/removal" class = "btn btn-danger">Удалить</a>
 
 {% endblock %}

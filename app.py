@@ -1,8 +1,10 @@
-from flask import Flask, request, render_template, url_for, redirect,session
+from flask import Flask, request, render_template, url_for, redirect, session
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime, timedelta
 
+
 import atexit
+
 
 from apscheduler.schedulers.background import BackgroundScheduler
 
@@ -28,6 +30,7 @@ class DBF(db.Model):
     def __repr__(self):
         return 'DBF %r' % self.id
 
+
 def delete_by_time():
     with app.app_context():
 
@@ -35,33 +38,35 @@ def delete_by_time():
 
         for item_tables in tables:
 
-            if item_tables.tm + timedelta(minutes=5) >= datetime.now():
+            if item_tables.tm + timedelta(minutes=5) <= datetime.now():
                 db.session.delete(item_tables)
                 db.session.commit()
 
+
 scheduler.add_job(func=delete_by_time, trigger="interval", seconds=360)
+
 scheduler.start()
+
 atexit.register(lambda: scheduler.shutdown())
 
 
 @app.route('/')
 def redirect_login():
-    return redirect(url_for('index'))
-
+    if not session:
+        return redirect(url_for('index'))
+    else:
+        return redirect(url_for("get_ads"))
 @app.route('/index')
 def index():
     return render_template("index.html")
 
 @app.route('/login', methods=['POST', 'GET'])
 def login():
-    if not session:
-        if request.method == 'POST':
-            session['username'] = request.form['username']
-            return render_template("ads.html")
-        else:
-            return render_template("login.html")
+    if request.method == 'POST':
+        session['username'] = request.form['username']
+        return redirect(url_for("get_ads"))
     else:
-        return render_template("ads.html")
+        return render_template("login.html")
 
 @app.route('/creature', methods=['POST', 'GET'])
 def creature():  # создание объявления

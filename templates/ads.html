@@ -6,7 +6,8 @@
 {% block body %}
     <div class="container mt-5">
     <h1>Все объявления</h1>
-
+    <a class="p-2 text-dark" href="/creature">Добавить объявление</a>
+    <a class="p-2 text-dark" href="/ads">Объявления</a>
     {% if gad|length > 0 %}
         {% for a in gad%}
             <div class="alert alert-info">
